@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { AppSyles, AppTitle } from './App.styled';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import AppForm from './Form';
 import Section from './Section';
 import Filter from './Filter';
