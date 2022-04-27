@@ -6,15 +6,26 @@ import { List, Item, Name, Number } from './ContactList.styles';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import * as contactsOperations from 'redux/contactsOperations';
+import * as selectors from 'redux/contactsSelectors';
 
 const ContactList = ({ onClick }) => {
   const dispatch = useDispatch();
-  const items = useSelector(state => state.contacts.items);
+  const items = useSelector(selectors.getItems);
+  const filterValue = useSelector(selectors.getFilterValue);
+
+  const showFilteredContacts = () => {
+    const normalizedFilter = filterValue.toLocaleLowerCase();
+    return items.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  const filteredContacts = showFilteredContacts();
 
   return (
     <List>
       {items &&
-        items.map(item => {
+        filteredContacts.map(item => {
           const { id, name, phone } = item;
           return (
             <Item key={id}>

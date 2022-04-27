@@ -1,6 +1,7 @@
 import React from 'react';
 import * as yup from 'yup';
 import { Formik, Form, ErrorMessage } from 'formik';
+import toast from 'react-hot-toast';
 import { FormField, Input, Label, ErrorMessageStyle } from './Form.styled';
 import Button from '../Button';
 import * as contactsOperations from 'redux/contactsOperations';
@@ -28,6 +29,7 @@ export const AppForm = () => {
 
   const handleSubmit = (values, { resetForm }) => {
     dispatch(contactsOperations.addContact(values));
+    toast.success(`${values.name} was added to contacts!`);
     resetForm();
   };
 

@@ -32,8 +32,14 @@ const error = createReducer(null, {
   [contactsActions.removeContactError]: (_, action) => action.payload,
 });
 
+const filter = createReducer('', {
+  [contactsActions.changeFilterValue]: (_, action) => action.payload,
+  [contactsActions.resetFilterValue]: () => '',
+});
+
 export const contactsReducer = combineReducers({
   items,
   isLoading,
   error,
+  filter,
 });

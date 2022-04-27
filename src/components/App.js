@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { AppSyles, AppTitle } from './App.styled';
 import { Toaster } from 'react-hot-toast';
@@ -9,31 +8,15 @@ import ContactList from './ContactList';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import * as contactsOperations from 'redux/contactsOperations';
+import * as selectors from 'redux/contactsSelectors';
 
 const App = ({ title }) => {
-  const [filter, setFilter] = useState('');
-
   const dispatch = useDispatch();
-  const items = useSelector(state => state.contacts.items);
+  const items = useSelector(selectors.getItems);
 
   useEffect(() => {
     dispatch(contactsOperations.fetchContacts());
   }, [dispatch]);
-
-  const handleFilterChange = e => {
-    setFilter(e.target.value);
-  };
-
-  // function showfilteredContacts() {
-  //   const normalizedFilter = filter.toLocaleLowerCase();
-  //   return contacts.filter(contact =>
-  //     contact.name.toLowerCase().includes(normalizedFilter)
-  //   );
-  // }
-
-  const resetFilter = () => {
-    setFilter('');
-  };
 
   return (
     <AppSyles>
@@ -45,11 +28,7 @@ const App = ({ title }) => {
       <Section title="Contacts">
         {items && items.length > 0 ? (
           <>
-            <Filter
-              value={filter}
-              onChange={handleFilterChange}
-              onClick={resetFilter}
-            />
+            <Filter />
             <ContactList />
           </>
         ) : (

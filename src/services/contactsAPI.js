@@ -14,3 +14,8 @@ export const postContact = async newContact => {
 export const deleteContactById = async id => {
   await axios.delete(`/contacts/${id}`);
 };
+
+export const filterContacts = async value => {
+  const response = await axios.get(`/contacts?filter=${value}`);
+  return response.data;
+};

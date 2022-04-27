@@ -23,8 +23,10 @@ export const removeContactSuccess = createAction(
 );
 export const removeContactError = createAction('contacts/removeContactError');
 
-// // for filter
+// for filter
+export const changeFilterValue = createAction('contacts/changeFilterValue');
+export const resetFilterValue = createAction('contacts/resetFilterValue');
 
 // export const changeFilterRequest = createAction('contacts/changeFilterRequest');
 // export const changeFilterSuccess = createAction('contacts/changeFilterSuccess');
-// export const changeFilterError = createAction('contacts/changeFilterError');
+// export const changeFilterError = createAction('contacts/changeFilterError')
