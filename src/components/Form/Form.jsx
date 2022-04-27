@@ -5,7 +5,8 @@ import toast from 'react-hot-toast';
 import { FormField, Input, Label, ErrorMessageStyle } from './Form.styled';
 import Button from '../Button';
 import * as contactsOperations from 'redux/contactsOperations';
-import { useDispatch } from 'react-redux';
+import * as selectors from 'redux/contactsSelectors';
+import { useDispatch, useSelector } from 'react-redux';
 
 const nameRegEx = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
 const phoneRegEx =
@@ -26,11 +27,27 @@ const schema = yup.object().shape({
 
 export const AppForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(selectors.getItems);
 
   const handleSubmit = (values, { resetForm }) => {
+    const { name } = values;
+    const newName = checkUniqueName(name);
+
+    if (newName) {
+      toast.error(`Name ${name} is already in contacts`);
+      return;
+    }
+
     dispatch(contactsOperations.addContact(values));
     toast.success(`${values.name} was added to contacts!`);
     resetForm();
+  };
+
+  const checkUniqueName = newName => {
+    const normalyzeName = newName.toLocaleLowerCase();
+    return contacts.find(
+      ({ name }) => name.toLocaleLowerCase() === normalyzeName
+    );
   };
 
   return (
@@ -67,39 +84,3 @@ export const AppForm = () => {
 };
 
 export default AppForm;
-
-// const checkUniqueName = newName => {
-//   const normalyzeName = newName.toLocaleLowerCase();
-//   return contacts.find(
-//     ({ name }) => name.toLocaleLowerCase() === normalyzeName
-//   );
-// };
-
-// const numberFormatting = number => {
-//   const array = [...number];
-//   for (let i = 3; i < array.length - 1; i += 2) {
-//     array.splice(i, 0, '-');
-//   }
-//   console.log();
-//   return array.join('');
-// };
-
-// const addContact = formValues => {
-//   const { name, number } = formValues;
-//   const newName = checkUniqueName(name);
-//   const formatedNumber = numberFormatting(number);
-
-//   if (newName) {
-//     toast.error(`Name ${name} is already in contacts`);
-//     return;
-//   }
-
-//   const contact = {
-//     id: nanoid(),
-//     name,
-//     number: formatedNumber,
-//   };
-
-//   setContacts(prevContacts => [contact, ...prevContacts]);
-//   toast.success(`${name} was added to contacts!`);
-// };

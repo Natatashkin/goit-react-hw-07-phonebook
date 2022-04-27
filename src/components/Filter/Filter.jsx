@@ -3,15 +3,15 @@ import IconButton from '../IconButton';
 import { FilterWrapper, Input } from './Filter.styled';
 import { FaTimes } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import * as contactsActions from 'redux/contactsActions';
 import * as selectors from 'redux/contactsSelectors';
+import { changeFilterValue, resetFilterValue } from 'redux/filterSlice';
 
 const Filter = () => {
   const dispatch = useDispatch();
   const filterValue = useSelector(selectors.getFilterValue);
 
   const handleFilterChange = e => {
-    dispatch(contactsActions.changeFilterValue(e.target.value));
+    dispatch(changeFilterValue(e.target.value));
   };
 
   return (
@@ -29,7 +29,7 @@ const Filter = () => {
             color="blue"
             type="button"
             aria-label="Clear filter"
-            onClick={() => dispatch(contactsActions.resetFilterValue())}
+            onClick={() => dispatch(resetFilterValue())}
           >
             <FaTimes />
           </IconButton>

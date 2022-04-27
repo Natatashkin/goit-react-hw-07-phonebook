@@ -24,7 +24,7 @@ const ContactList = ({ onClick }) => {
 
   return (
     <List>
-      {items &&
+      {items.length > 0 &&
         filteredContacts.map(item => {
           const { id, name, phone } = item;
           return (
@@ -35,7 +35,9 @@ const ContactList = ({ onClick }) => {
                 type="button"
                 background="blue"
                 aria-label="Button to delete contact"
-                onClick={() => dispatch(contactsOperations.deleteContact(id))}
+                onClick={() =>
+                  dispatch(contactsOperations.deleteContact({ id, name }))
+                }
               >
                 <FaTrashAlt />
               </IconButton>

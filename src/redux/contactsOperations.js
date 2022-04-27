@@ -1,36 +1,42 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as contactsAPI from 'services/contactsAPI';
-import * as contactsActions from 'redux/contactsActions';
 import toast from 'react-hot-toast';
 
-export const fetchContacts = () => async dispatch => {
-  dispatch(contactsActions.fetchContactsRequest());
-
-  try {
-    const contacts = await contactsAPI.fetchAllContacts();
-    dispatch(contactsActions.fetchContactsSuccess(contacts));
-  } catch (error) {
-    dispatch(contactsActions.fetchContactsError(error));
+export const fetchContacts = createAsyncThunk(
+  'contacts/fetchContacts',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await contactsAPI.fetchAllContacts();
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
-};
+);
 
-export const addContact = contact => async dispatch => {
-  dispatch(contactsActions.addContactRequest());
-
-  try {
-    const response = await contactsAPI.postContact(contact);
-    dispatch(contactsActions.addContactSucceess(response));
-  } catch (error) {
-    dispatch(contactsActions.addContactError(error));
+export const addContact = createAsyncThunk(
+  'contact/addContact',
+  async (contact, { rejectWithValue }) => {
+    try {
+      const response = await contactsAPI.postContact(contact);
+      return response;
+    } catch (error) {
+      console.log(error.message);
+      return rejectWithValue(error.message);
+    }
   }
-};
+);
 
-export const deleteContact = id => async dispatch => {
-  dispatch(contactsActions.removeContactRequest());
-  try {
-    await contactsAPI.deleteContactById(id);
-    dispatch(contactsActions.removeContactSuccess(id));
-    toast.success(`Contact was deleted!`);
-  } catch (error) {
-    dispatch(contactsActions.removeContactError(error));
+export const deleteContact = createAsyncThunk(
+  'contacts/removeContact',
+  async ({ id, name }, { rejectWithValue }) => {
+    try {
+      await contactsAPI.deleteContactById(id);
+      toast.success(`Contact ${name} was deleted!`);
+      return id;
+    } catch (error) {
+      console.log(error.message);
+      return rejectWithValue(error.message);
+    }
   }
-};
+);

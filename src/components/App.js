@@ -13,6 +13,7 @@ import * as selectors from 'redux/contactsSelectors';
 const App = ({ title }) => {
   const dispatch = useDispatch();
   const items = useSelector(selectors.getItems);
+  const isLoading = useSelector(selectors.getLoadingStatus);
 
   useEffect(() => {
     dispatch(contactsOperations.fetchContacts());
@@ -26,13 +27,15 @@ const App = ({ title }) => {
       </Section>
 
       <Section title="Contacts">
-        {items && items.length > 0 ? (
+        {!isLoading && items.length === 0 && (
+          <p>You haven't any contacts yet!</p>
+        )}
+        {isLoading && <h3>Loading...</h3>}
+        {items.length > 0 && (
           <>
             <Filter />
             <ContactList />
           </>
-        ) : (
-          <p>You haven't any contacts yet!</p>
         )}
       </Section>
       <Toaster />
