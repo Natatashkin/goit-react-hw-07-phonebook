@@ -30,7 +30,7 @@ const App = ({ title }) => {
         {!isLoading && items.length === 0 && (
           <p>You haven't any contacts yet!</p>
         )}
-        {isLoading && <h3>Loading...</h3>}
+       
         {items.length > 0 && (
           <>
             <Filter />
